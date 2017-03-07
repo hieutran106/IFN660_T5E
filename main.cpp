@@ -16,19 +16,35 @@ void main(int argc, char *argv[]) {
 		printf("Next Token: ");
 		switch (token) {
 			case REGEX_START: {
-				printf("REGEXP_START (%s)\n", yylval.regexStart);
+				printf("REGEX_START (%s)\n", yylval.regexStart);
 				break;
 			}
 			case REGEX_END: {
-				printf("REGEXP_END (%s)\n", yylval.regexEnd);
+				printf("REGEX_END (%s)\n", yylval.regexEnd);
 				break;
 			}
 			case REGEX_BODY: {
-				printf("REGEXP_BODY (%s)\n", yylval.regexBody);
+				printf("REGEX_CHARS (%s)\n", yylval.regexBody);
+				break;
+			}
+			case REGEX_CLASS_START: {
+				printf("REGEX_CLASS_START (%s)\n", yylval.regexClassStart);
+				break;
+			}
+			case REGEX_CLASS_BODY: {
+				printf("REGEX_CLASS_CHARS (%s)\n", yylval.regexClassBody);
+				break;
+			}
+			case REGEX_CLASS_END: {
+				printf("REGEX_CLASS_END (%s)\n", yylval.regexClassEnd);
+				break;
+			}
+			case REGEX_BACKSLASH_SEQ: {
+				printf("REGEX_BACKSLASH_SEQ (%s)\n", yylval.regexBackSeq);
 				break;
 			}
 			case REGEX_FLAG: {
-				printf("REGEXP_FLAG (%s)\n", yylval.regexFlag);
+				printf("REGEX_FLAG (%s)\n", yylval.regexFlag);
 				break;
 			}
 			case IDENT: {
