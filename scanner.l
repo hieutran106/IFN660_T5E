@@ -7,33 +7,29 @@ d [0-9]
 w [a-zA-Z_]
 W [ \r\n\t]
 
+%s NEUTRALIZED
+%x BEGIN_REGEX
+
 %%
 
-if                          { return IF; }
-else                        { return ELSE; }
-var                         { return VAR; }
-const                       { return CONST; }
-let                         { return LET; }
+const						{ return CONST; }
 
-{w}({w}|{d})*               { yylval.var = _strdup(yytext); return IDENT; }
-(({d}+(\.{d}*)?)|(\.{d}+))  { yylval.num = atof(yytext); return NUMBER; }
+[/][*\/[]                   {
+								fprintf(stderr, "Syntax Error: %s is not allowed here. (REGEX)\n", _strdup(yytext));
+								exit(0);
+							}
+[/]							{ yylval.regexStart = _strdup(yytext); BEGIN(BEGIN_REGEX); return REGEX_START; }
+<BEGIN_REGEX>{w}+			{ yylval.regexBody = _strdup(yytext); return REGEX_BODY; }
+<BEGIN_REGEX>[/]            { yylval.regexEnd = _strdup(yytext); BEGIN(NEUTRALIZED); return REGEX_END; }
 
-"="                         { return '='; }
-"+"                         { return '+'; }
-"-"                         { return '-'; }
-"*"                         { return '*'; }
-"/"                         { return '/'; }
-"<"                         { return '<'; }
-">"                         { return '>'; }
-"("                         { return '('; }
-")"                         { return ')'; }
-"{"                         { return '{'; }
-"}"                         { return '}'; }
-";"                         { return ';'; }
 
-{W}                   /* skip whitespace */
+{w}+						{ yylval.ident = _strdup(yytext); return IDENT; }
+[=]							{ return '='; }
+[;]                         { return ';'; }
 
-.                           { 
+{W}
+
+.                           {
                                 fprintf(stderr, "invalid character '%c'\n", *yytext);
                                 exit(0);
                             }

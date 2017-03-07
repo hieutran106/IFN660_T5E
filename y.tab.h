@@ -1,20 +1,20 @@
 #pragma once
 
 enum yytokentype {
-	NUMBER = 258,
-	IDENT,
-	IF,
-	ELSE,
-	VAR,
+	REGEX_START = 258,
+	REGEX_END,
+	REGEX_BODY,
+	REGEX_FLAG,
 	CONST,
-	LET,
-	REGEXP
+	IDENT,
 };
 
 union YYSTYPE {
-	char *var;
-	double num;
-	char *regexp;
+	char *ident;
+	char *regexStart;
+	char *regexEnd;
+	char *regexBody;
+	char *regexFlag;
 };
 
 extern YYSTYPE yylval;
